@@ -4,7 +4,7 @@ let lon = "";
 let city = "";
 let icon = "";
 let day = "";
-let ice = "";
+let saveCity = "";
 function currentForecast(city) {
   fetch(
     "https:/api.openweathermap.org/data/2.5/weather/?q=" +
@@ -73,7 +73,28 @@ function getDaily() {
     });
 }
 
+function fillSaveCities() {
+  saveCity = JSON.parse(localStorage.getItem("cities"));
+  if (saveCity == null) saveCity = [];
+
+  //create and add li(s)aka scores
+  $("#list").html(" ");
+  for (let i = 0; i < saveCity.length; i++) {
+    $("#list").append(
+      `<li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold mt-3">
+    ${saveCity[i]}
+    </li>`
+    );
+  }
+}
+
+fillSaveCities();
+
 $("#get-city").on("click", function () {
   city = $("#city").val();
+  saveCity.push(city);
+  localStorage.setItem("cities", JSON.stringify(saveCity));
   currentForecast(city);
+  fillSaveCities();
+  console.log(saveCity);
 });
