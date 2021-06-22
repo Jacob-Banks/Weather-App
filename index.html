@@ -29,7 +29,7 @@
                     <label for="city" class="form-label h1">Search for a city:</label>
                     <input type="text" class="form-control" id="city">
 
-                    <button type="button" class="btn btn-primary btn-block my-2">Primary</button>
+                    <button type="button" id="get-city" class="btn btn-primary btn-block my-2">Primary</button>
                 </form>
                 <ul class="list-group border-top border-dark border-3  my-3">
                     <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold mt-3">ottawa
@@ -47,11 +47,11 @@
                 <div class="row m-2">
                     <div class="card border border-dark " style="width: 100%;">
                         <div class="card-body">
-                            <h1 class="card-title">city date icon</h1>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
+                            <h1 class="card-title " id="nowCity">city date icon</h1>
+                            <p class="card-text my-3 " id="temp">temp</p>
+                            <p class="card-text my-3" id="wind">wind</p>
+                            <p class="card-text my-3" id="humidity">wind</p>
+                            <p class="card-text my-3" id="uv">wind</p>
                         </div>
                     </div>
                 </div>
@@ -59,66 +59,10 @@
                     <h3 class="h3">5-Day-forcast:</h3>
                 </div>
                 <div class="card-group">
-                    <div class="card text-light cardback mx-2">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
 
-                    </div>
-                    <div class="card text-light cardback mx-2">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
 
-                    </div>
-                    <div class="card text-light cardback mx-2 ">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
 
-                    </div>
-                    <div class="card text-light cardback mx-2">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
 
-                    </div>
-                    <div class="card text-light cardback mx-2">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
-
-                    </div>
-                    <div class="card text-light cardback mx-2">
-                        <div class="card-body">
-                            <h5 class="card-title">day</h5>
-                            <p class="card-text my-3 ">temp</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                            <p class="card-text my-3">wind</p>
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -132,8 +76,8 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
-            <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="./assets/script.js"></script> -->
+            <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+            <script src="./assets/script.js"></script>
 </body>
 
 </html>
