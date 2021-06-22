@@ -5,12 +5,135 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Staatliches&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather-app</title>
 </head>
 
 <body>
-    <script src="./assets/script.js"></script>
+    <div class="row  justify-content-center gradient-custom ">
+
+        <h1 class="display-6 text-light">Weather Dashbord</h1>
+
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3  ">
+
+                <form>
+                    <label for="city" class="form-label h1">Search for a city:</label>
+                    <input type="text" class="form-control" id="city">
+
+                    <button type="button" class="btn btn-primary btn-block my-2">Primary</button>
+                </form>
+                <ul class="list-group border-top border-dark border-3  my-3">
+                    <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold mt-3">ottawa
+                    </li>
+                    <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold">honolulu
+                    </li>
+                    <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold">prague</li>
+                    <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold">melbourn
+                    </li>
+                    <li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold">santiago
+                    </li>
+                </ul>
+            </div>
+            <div class="col md-9">
+                <div class="row m-2">
+                    <div class="card border border-dark " style="width: 100%;">
+                        <div class="card-body">
+                            <h1 class="card-title">city date icon</h1>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mx-2">
+                    <h3 class="h3">5-Day-forcast:</h3>
+                </div>
+                <div class="card-group">
+                    <div class="card text-light cardback mx-2">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+                    <div class="card text-light cardback mx-2">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+                    <div class="card text-light cardback mx-2 ">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+                    <div class="card text-light cardback mx-2">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+                    <div class="card text-light cardback mx-2">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+                    <div class="card text-light cardback mx-2">
+                        <div class="card-body">
+                            <h5 class="card-title">day</h5>
+                            <p class="card-text my-3 ">temp</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                            <p class="card-text my-3">wind</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+            <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="./assets/script.js"></script> -->
 </body>
 
 </html>
