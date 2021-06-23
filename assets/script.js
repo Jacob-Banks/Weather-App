@@ -4,33 +4,43 @@ let lon = "";
 let city = "";
 let icon = "";
 let day = "";
-let saveCity = "";
+let bg = "";
+let saveCity = [];
+
 function currentForecast(city) {
   fetch(
     "https:/api.openweathermap.org/data/2.5/weather/?q=" +
       city +
       "&appid=" +
       key
-  )
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
+  ).then(function (response) {
+    // request was successful
+    if (response.ok) {
+      response.json().then(function (data) {
+        //get coordinates for daily forcast
+        lat = data.coord.lat;
+        lon = data.coord.lon;
+        icon = data.weather[0].icon;
+        // convert to human date
+        day = new Date(data.dt * 1000).toLocaleDateString("en-US");
+        // clear previous 5 day forecast
+        $(".card-group").html(" ");
 
-      lat = data.coord.lat;
-      lon = data.coord.lon;
-      icon = data.weather[0].icon;
-      day = new Date(data.dt * 1000).toLocaleDateString("en-US");
-      $(".card-group").html(" ");
-      getDaily();
-    })
-    .catch(function () {
-      // catch any errors
-    });
+        getDaily(city);
+      });
+    } else {
+      // if not successful,  remove array/storage from redirect to homepage
+      saveCity.pop();
+      localStorage.setItem("cities", JSON.stringify(saveCity));
+      console.log(saveCity);
+
+      alert("sorry we can't find what you're looking for");
+      location.reload();
+    }
+  });
 }
 
-function getDaily() {
+function getDaily(city) {
   fetch(
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
       lat +
@@ -43,15 +53,42 @@ function getDaily() {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      //set uv background
+      if (data.daily[0].uvi < 3) {
+        bg = "green";
+      }
+      if (data.daily[0].uvi > 3) {
+        bg = "yellow";
+      }
+
+      if (data.daily[0].uvi > 5) {
+        bg = "orange";
+      }
+
+      if (data.daily[0].uvi > 7) {
+        bg = "red";
+      }
+
+      if (data.daily[0].uvi > 10) {
+        bg = "purpul";
+      }
+
+      // fill todays weather
 
       $("#nowCity").html(
         `${city} ${day} <img src='http://openweathermap.org/img/w/${icon}.png'/>`
       );
+      // set todays temp
       $("#temp").html(`Temp: ${data.daily[0].temp.day} C`);
-      $("#wind").html(`wind: ${data.daily[0].wind_speed} KPH`);
-      $("#humidity").html(`humidity: ${data.daily[0].humidity} %`);
-      $("#uv").html(`uv: ${data.daily[0].uvi} C`);
+      // set wind
+      $("#wind").html(`Wind: ${data.daily[0].wind_speed} KPH`);
+      // set humidity
+      $("#humidity").html(`Humidity: ${data.daily[0].humidity} %`);
+      // set uv
+      $("#uv").html(`UV Index: <span id="uvI">${data.daily[0].uvi}</span>`);
+
+      // fill 5 day forecast
+      $("#uvI").css("background-color", bg);
       for (let i = 1; i < 6; i++) {
         icon = data.daily[i].weather[0].icon;
         day = new Date(data.daily[i].dt * 1000).toLocaleDateString("en-US");
@@ -62,8 +99,7 @@ function getDaily() {
                 <p class="card-text my-3"><img src='http://openweathermap.org/img/w/${icon}.png'/></p>
                 <p class="card-text my-3 ">Temp: ${data.daily[i].temp.day} C</p>
                 <p class="card-text my-3">wind: ${data.daily[i].wind_speed} KPH</p>
-                <p class="card-text my-3">humidity: ${data.daily[0].humidity} %</p>
-                
+                <p class="card-text my-3">humidity: ${data.daily[i].humidity} %</p>                
             </div>
         </div>`);
       }
@@ -72,29 +108,64 @@ function getDaily() {
       // catch any errors
     });
 }
-
+// geet save citues from local
 function fillSaveCities() {
   saveCity = JSON.parse(localStorage.getItem("cities"));
   if (saveCity == null) saveCity = [];
 
-  //create and add li(s)aka scores
+  //   clear list so
   $("#list").html(" ");
+  //create and add li(s)aka cities
   for (let i = 0; i < saveCity.length; i++) {
     $("#list").append(
-      `<li class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold mt-3">
+      `<li id="${i}"class="list-group-item list-group-item-secondary text-center my-2 font-weight-bold mt-3">
     ${saveCity[i]}
     </li>`
     );
   }
 }
-
+// fill cities on load
 fillSaveCities();
+// default city
+currentForecast("paris");
+//get list city click
+$(".list-group-item-secondary").on("click", function () {
+  aCity = $(this).html().trim();
+  currentForecast(aCity);
+});
+// capture button click
 
 $("#get-city").on("click", function () {
+  //get value from input field
   city = $("#city").val();
-  saveCity.push(city);
-  localStorage.setItem("cities", JSON.stringify(saveCity));
-  currentForecast(city);
+  // if city has been used dont put in storage
+  if (saveCity.includes(city)) {
+    currentForecast(city);
+  } else {
+    // put city into storage display new city
+    saveCity.push(city);
+    localStorage.setItem("cities", JSON.stringify(saveCity));
+    currentForecast(city);
+  }
+  //fill list
   fillSaveCities();
   console.log(saveCity);
 });
+
+let form = document.getElementById("form");
+function handleForm(event) {
+  event.preventDefault();
+  city = $("#city").val();
+  if (saveCity.includes(city)) {
+    currentForecast(city);
+  } else {
+    // put city into storage display new city
+    saveCity.push(city);
+    localStorage.setItem("cities", JSON.stringify(saveCity));
+    currentForecast(city);
+  }
+  //fill list
+  fillSaveCities();
+  console.log(saveCity);
+}
+form.addEventListener("submit", handleForm);
