@@ -53,42 +53,46 @@ function getDaily(city) {
       lat +
       "&lon=" +
       lon +
-      "&exclude=current,minutely,hourly&units=metric&appid=" +
+      "&units=metric&appid=" +
       key
-  )
+  ) //&exclude=current,minutely,hourly
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
+      console.log(data);
       //set uv background
-      if (data.daily[0].uvi < 3) {
+      if (data.current.uvi < 3) {
         bg = "green";
       }
-      if (data.daily[0].uvi > 3) {
+      if (data.current.uvi > 3) {
         bg = "yellow";
+        $("#uvI").css("color", "black");
       }
-      if (data.daily[0].uvi > 5) {
+      if (data.current.uvi > 5) {
         bg = "orange";
+        $("#uvI").css("color", "white");
       }
-      if (data.daily[0].uvi > 7) {
+      if (data.current.uvi > 7) {
         bg = "red";
       }
-      if (data.daily[0].uvi > 10) {
-        bg = "purpul";
+      if (data.current.uvi > 10) {
+        bg = "purple";
       }
       // fill todays weather
-
+      icon = data.current.weather[0].icon;
+      day = new Date(data.current.dt * 1000).toLocaleDateString("en-US");
       $("#nowCity").html(
         `${city} ${day} <img src='http://openweathermap.org/img/w/${icon}.png'/>`
       );
       // set todays temp
-      $("#temp").html(`Temp: ${data.daily[0].temp.day} C`);
+      $("#temp").html(`Temp: ${data.current.temp} C`);
       // set wind
-      $("#wind").html(`Wind: ${data.daily[0].wind_speed} KPH`);
+      $("#wind").html(`Wind: ${data.current.wind_speed} KPH`);
       // set humidity
-      $("#humidity").html(`Humidity: ${data.daily[0].humidity} %`);
+      $("#humidity").html(`Humidity: ${data.current.humidity} %`);
       // set uv
-      $("#uv").html(`UV Index: <span id="uvI">${data.daily[0].uvi}</span>`);
+      $("#uv").html(`UV Index: <span id="uvI">${data.current.uvi}</span>`);
       $("#uvI").css("background-color", bg);
 
       // fill 5 day forecast
@@ -131,8 +135,8 @@ function fillSaveCities() {
   }
   //attach event listener on saved city li, launch that forecast
   $(".list-group-item-secondary").on("click", function () {
-    aCity = $(this).html().trim();
-    currentForecast(aCity);
+    city = $(this).html().trim();
+    currentForecast(city);
   });
 }
 
@@ -175,8 +179,6 @@ function titleCase(str) {
 
 // fill cities on load
 fillSaveCities();
-// default city
-currentForecast("Paris");
 
 // capture submit button click
 
@@ -198,3 +200,15 @@ $("#get-city").on("click", function () {
 });
 
 form.addEventListener("submit", handleForm);
+// default city
+$.ajax({
+  url: "https://geolocation-db.com/jsonp",
+  jsonpCallback: "callback",
+  dataType: "jsonp",
+  success: function (location) {
+    city = location.city;
+    lat = location.latitude;
+    lon = location.longitude;
+    getDaily(city);
+  },
+});
