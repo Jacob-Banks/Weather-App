@@ -158,7 +158,7 @@ function handleForm(event) {
 
 //  make entries first letters uppercase
 function titleCase(str) {
-  var splitStr = str.toLowerCase().split("");
+  var splitStr = str.toLowerCase().split(" ");
   for (var i = 0; i < splitStr.length; i++) {
     // Assign it back to the array
     splitStr[i] =
