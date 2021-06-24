@@ -1,73 +1,52 @@
-const key = "858ff639949c4324e1914d7e8c4fbe7e";
-let lat = "";
-let lon = "";
-let city = "";
-let icon = "";
-let day = "";
-let bg = "";
+const key = "&appid=858ff639949c4324e1914d7e8c4fbe7e"; // my openweather key
+const apiCity = "https:/api.openweathermap.org/data/2.5/weather/?q="; // go to city forecast
+const apiCoord = "https://api.openweathermap.org/data/2.5/onecall?"; // go to 7 day forecast by coords
+let lat, lon, city, icon, day, bg;
 let saveCity = [];
 let form = document.getElementById("form");
 
 // get selected cities current weatherr data
 function currentForecast(city) {
-  fetch(
-    "https:/api.openweathermap.org/data/2.5/weather/?q=" +
-      city +
-      "&appid=" +
-      key
-  ).then(function (response) {
+  fetch(apiCity + city + key).then(function (response) {
     // request was successful
     if (response.ok) {
       response.json().then(function (data) {
         //get coordinates for daily forcast
+        console.log(data);
         lat = data.coord.lat;
         lon = data.coord.lon;
         icon = data.weather[0].icon;
-        // convert to human date
-        day = new Date(data.dt * 1000).toLocaleDateString("en-US");
+
         // clear previous 5 day forecast
         $(".card-group").html(" ");
-
+        //launch 5day forcast
         getDaily(city);
       });
     } else {
       // if not successful,  remove item from array/storage and redirect to homepage
       saveCity.shift();
-      //length control
-      if (saveCity.length > 10) {
-        saveCity.pop;
-      }
       // send to storage
       localStorage.setItem("cities", JSON.stringify(saveCity));
-
+      // let user know of failure
       alert("sorry we can't find what you're looking for");
       location.reload();
     }
   });
 }
-
 // display current day forecast and 5 day forecast
 function getDaily(city) {
-  fetch(
-    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-      lat +
-      "&lon=" +
-      lon +
-      "&units=metric&appid=" +
-      key
-  ) //&exclude=current,minutely,hourly
+  fetch(apiCoord + "&lat=" + lat + "&lon=" + lon + "&units=metric" + key)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
       //set uv background
       if (data.current.uvi < 3) {
         bg = "green";
       }
       if (data.current.uvi > 3) {
         bg = "yellow";
-        $("#uvI").css("color", "black");
+        $("#uvI").css("color", "black"); //couldnt read
       }
       if (data.current.uvi > 5) {
         bg = "orange";
@@ -79,9 +58,13 @@ function getDaily(city) {
       if (data.current.uvi > 10) {
         bg = "purple";
       }
-      // fill todays weather
+      // get icon
       icon = data.current.weather[0].icon;
-      day = new Date(data.current.dt * 1000).toLocaleDateString("en-US");
+      //get date
+      day = new Date().toLocaleDateString("en-US", {
+        timeZone: `${data.timezone}`,
+      });
+      // fill current weather
       $("#nowCity").html(
         `${city} ${day} <img src='http://openweathermap.org/img/w/${icon}.png'/>`
       );
@@ -100,7 +83,10 @@ function getDaily(city) {
         //get icon
         icon = data.daily[i].weather[0].icon;
         //get human date not seconds from 1970
-        day = new Date(data.daily[i].dt * 1000).toLocaleDateString("en-US");
+        day = new Date(data.daily[i].dt * 1000).toLocaleDateString("en-US", {
+          timeZone: `${data.timezone}`,
+        });
+        //fill 5 day cards
         $(".card-group").append(`
         <div class="card text-light cardback mx-2">
             <div class="card-body">
@@ -114,7 +100,9 @@ function getDaily(city) {
       }
     })
     .catch(function () {
-      // catch any errors
+      // catch errors
+      alert("sry pls make sure you have a internet connection ");
+      window.reload();
     });
 }
 
@@ -122,7 +110,10 @@ function getDaily(city) {
 function fillSaveCities() {
   saveCity = JSON.parse(localStorage.getItem("cities"));
   if (saveCity == null) saveCity = [];
-
+  //limit length
+  if (saveCity.length > 10) {
+    saveCity.pop();
+  }
   //   clear list to prevent appending to current li
   $("#list").html(" ");
   //create and add li(s)aka cities
@@ -147,11 +138,11 @@ function handleForm(event) {
   city = $("#city").val();
   // make it have proper caps
   titleCase(city);
-  // if saved city search contains this city display forecasst
+  // if saved city list contains this city display forecasst
   if (saveCity.includes(city)) {
     currentForecast(city);
   } else {
-    // put city into storage display forecasst
+    // put city into storage display forecasst add to city list
     saveCity.unshift(city);
     localStorage.setItem("cities", JSON.stringify(saveCity));
     currentForecast(city);
@@ -162,10 +153,12 @@ function handleForm(event) {
 
 //  make entries first letters uppercase
 function titleCase(str) {
+  // mAKE LOWER CASE look for spaces split array
   var splitStr = str.toLowerCase().split(" ");
   for (var i = 0; i < splitStr.length; i++) {
-    // Assign it back to the array
+    // Assign it back to the array with first letter in caps
     splitStr[i] =
+      //
       splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
   // Directly return the joined string
@@ -200,7 +193,8 @@ $("#get-city").on("click", function () {
 });
 
 form.addEventListener("submit", handleForm);
-// default city
+
+// default city lauch users city forecast
 $.ajax({
   url: "https://geolocation-db.com/jsonp",
   jsonpCallback: "callback",
@@ -210,5 +204,8 @@ $.ajax({
     lat = location.latitude;
     lon = location.longitude;
     getDaily(city);
+  }, // if cant find user location
+  error: function () {
+    currentForecast("Paris");
   },
 });
