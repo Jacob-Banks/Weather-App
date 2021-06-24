@@ -1,5 +1,5 @@
 const key = "&appid=858ff639949c4324e1914d7e8c4fbe7e"; // my openweather key
-const apiCity = "https:/api.openweathermap.org/data/2.5/weather/?q="; // go to city forecast
+const apiCity = "https://api.openweathermap.org/data/2.5/weather/?q="; // go to city forecast
 const apiCoord = "https://api.openweathermap.org/data/2.5/onecall?"; // go to 7 day forecast by coords
 let lat, lon, city, icon, day, bg;
 let saveCity = [];
