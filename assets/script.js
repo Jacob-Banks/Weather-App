@@ -1,7 +1,7 @@
 const key = "&appid=858ff639949c4324e1914d7e8c4fbe7e"; // my openweather key
 const apiCity = "https://api.openweathermap.org/data/2.5/weather/?q="; // go to city forecast
 const apiCoord = "https://api.openweathermap.org/data/2.5/onecall?"; // go to 7 day forecast by coords
-let lat, lon, city, icon, day, bg;
+let lat, lon, city, icon, rtemp, rntemp, day, bg;
 let saveCity = [];
 let form = document.getElementById("form");
 
@@ -64,6 +64,8 @@ function getDaily(city) {
       day = new Date().toLocaleDateString("en-US", {
         timeZone: `${data.timezone}`,
       });
+      rtemp = data.current.temp;
+      rntemp = rtemp.toFixed(0);
       // fill current weather
       $("#nowCity").html(
         `${city} ${day} <img src='http://openweathermap.org/img/w/${icon}.png'/>`
@@ -87,8 +89,9 @@ function getDaily(city) {
           timeZone: `${data.timezone}`,
         });
         //fill 5 day cards
-        $(".card-group").append(`
-        <div class="card text-light cardback mx-2">
+        $(".dayCards").append(`
+        <div class="col-auto mb-3">
+        <div class="card text-light cardback no-gutters" style="width: 14rem;">
             <div class="card-body">
                 <h5 class="card-title">${day}</h5>
                 <p class="card-text my-3 font-weight-bold"><img src='http://openweathermap.org/img/w/${icon}.png'/></p>
@@ -99,6 +102,7 @@ function getDaily(city) {
         </div>`);
       }
     })
+
     .catch(function () {
       // catch errors
       alert("sry pls make sure you have a internet connection ");
