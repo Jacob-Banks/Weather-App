@@ -3,7 +3,7 @@ const apiCity = "https://api.openweathermap.org/data/2.5/weather/?q="; // go to 
 const apiCoord = "https://api.openweathermap.org/data/2.5/onecall?"; // go to 7 day forecast by coords
 let lat, lon, city, icon, rtemp, rntemp, day, bg;
 let saveCity = [];
-let form = document.getElementById("form");
+const form = document.getElementById("form");
 
 // get selected cities current weatherr data
 function currentForecast(city) {
@@ -16,10 +16,7 @@ function currentForecast(city) {
         lat = data.coord.lat;
         lon = data.coord.lon;
         icon = data.weather[0].icon;
-
-        // clear previous 5 day forecast
-        $(".card-group").html(" ");
-        //launch 5day forcast
+        //launch 5day + current forcast
         getDaily(city);
       });
     } else {
@@ -41,6 +38,7 @@ function getDaily(city) {
     })
     .then(function (data) {
       //set uv background
+      console.log(data);
       if (data.current.uvi < 3) {
         bg = "green";
       }
@@ -64,8 +62,7 @@ function getDaily(city) {
       day = new Date().toLocaleDateString("en-US", {
         timeZone: `${data.timezone}`,
       });
-      rtemp = data.current.temp;
-      rntemp = rtemp.toFixed(0);
+
       // fill current weather
       $("#nowCity").html(
         `${city} ${day} <img src='http://openweathermap.org/img/w/${icon}.png'/>`
@@ -79,7 +76,8 @@ function getDaily(city) {
       // set uv
       $("#uv").html(`UV Index: <span id="uvI">${data.current.uvi}</span>`);
       $("#uvI").css("background-color", bg);
-
+      //clear previous 5 day forecast
+      $(".dayCards").html("");
       // fill 5 day forecast
       for (let i = 1; i < 6; i++) {
         //get icon
@@ -128,7 +126,7 @@ function fillSaveCities() {
     </li>`
     );
   }
-  //attach event listener on saved city li, launch that forecast
+  //attach event listener on saved city li, launch that forecast on click
   $(".list-group-item-secondary").on("click", function () {
     city = $(this).html().trim();
     currentForecast(city);
