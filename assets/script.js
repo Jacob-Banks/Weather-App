@@ -151,6 +151,7 @@ function handleForm(event) {
   }
   //update saved city search list
   fillSaveCities();
+  document.getElementById("form").reset();
 }
 
 //  make entries first letters uppercase
@@ -192,6 +193,7 @@ $("#get-city").on("click", function () {
   }
   //update searched city list
   fillSaveCities();
+  document.getElementById("form").reset();
 });
 
 form.addEventListener("submit", handleForm);
